@@ -6,8 +6,8 @@ Networking and Distributed Systems CA3
 
 
 The purpose of this assignment is to develop a client-server web application.
-This is a single room chat app where all current users connected to the URL can message eachotehr; 
-all the users can see eachothers messages.
+This is a single room chat app where all current users connected to the URL can message eachother; 
+all the users can see eachother's messages.
 
 When a user lands on the URL, a client-server connection is made and the client is assigned a clientID
 
