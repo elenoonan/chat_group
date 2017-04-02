@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<!--Eleanor Noonan N00147653 IADT YEAR 3 CA3 NETWORKING APRIL 2017-->
+<html>
+
+<head>
+    <title>Chat App Project</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="styles.css">
+    <link href="dist/css/bootstrap.min.css" rel="stylesheet">
+
+</head>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-10" "col-sm-2">
+                <!--group chat title-->
+                <h1>Family Group Chat</h1>
+                <!--placeholder for current client name to appear-->
+                <p id="clientId"></p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-10" "col-sm-2" id="clients">
+                <h3>Users currently online: </h3>
+                <!--all connected users are added to the list which will be displayed here-->
+                <ul id="usersActive"></ul>
+            </div>
+        </div>
+
+
+        <!--username input form-->
+        <div class="row " id="nickWrap">
+            <div class="col-xs-10" "col-sm-2">
+                <p>Enter a Username: </p>
+                <p id="nickError"></p>
+                <form id="setNick">
+                    <input size="40" id="nickname"></input><button>Submit</button>
+                </form>
+            </div>
+        </div>
+
+
+        <!--message input form-->
+        <div class="row" id="contentWrap">
+            <div class="col-xs-10" "col-sm-2">
+                <p>Enter message here: </p>
+                <ul id="messages"></ul>
+                <form id="mform">
+                    <input id="m" size="40" autocomplete="off"></input><button>Send</button>
+                </form>
+            </div>
+        </div>
+
+        <!--closing div for container-->
+    </div>
+
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+
+    <script>
+        var socket = io.connect();
+        //var clicked = 0;
+
+        //variables for nicknames
+        var $nickForm = $('#setNick');
+        var $nickError = $('#nickError');
+        var $nickBox = $('#nickname');
+        var $users = $('#users');
+
+        //toggles username box and submit button
+        $nickForm.submit(function(e) { //e is the event
+            e.preventDefault(); //stops page from reloading which is what Submit usually does
+            var name = $nickBox.val(); //JS variable for doc.getElementById in if statement below to create welcome + nickname message
+            socket.emit('new user', $nickBox.val(), function(data) { //emit means send to server ... with a label new users and function nickBox (username) and functiona data is what sent back from the server ... the callback/server response true or false
+                $('#contentWrap').hide();
+                if (data) {
+                    document.getElementById("clientId").innerHTML = "Welcome: " + name; //welcome user message
+                    $('#nickWrap').hide(); //username input form removed
+                    $('#contentWrap').show(); //message input form displayed
+
+                } else(
+                    $nickError.html('Username already taken! Try again') //if a currently connected user has already logged in using the same username, then callback is false and an error message will tell the user to try again
+                )
+            });
+            $nickBox.val(''); //empties contents of username input form
+        });
+
+
+
+        //"mform" is differentiating between two forms ... the username and messages were merging ... it was appending username to the message area so things were getting confused
+        //when user types in message, the server gets it as a chat message with nickname added
+        $('#mform').submit(function() {
+            socket.emit('chat message', $('#m').val(), $('#clientId').val(), $('#nickname').val()); //emit is SENDING message to the server and m is text box; taking value form text box and taking client id and nickname
+            $('#m').val(''); //clearing the message box
+            $('#clientId').val(''); //clearing the id
+            $('#nickname').val(''); //clearing the nickname
+            return false;
+        });
+
+
+        //ON is waiting to RECEIVE the msg string (username/nickname and message they sent appended together on server side)
+        socket.on('chat message', function(msg) {
+            $('#messages').append($('<li>').text(msg));
+        });
+
+        //relates to the current/active users
+        //this is an event listener for the distribution list of nicknames... 
+        //server sends this everytime a clients connects or disconnects
+        socket.on('usernames', function(msg) {
+            document.getElementById("usersActive").innerHTML = ""; //empties what was in list prior to new connect/disconnect
+            console.log(msg); //test in console
+            //for loop ... array of user nicknames and this loops through whole array of nicknames
+            for (i = 0; i < msg.length; i++) {
+                $('#usersActive').append($('<li>').text(msg[i])); //adds the current user as a list item and feeds list at top of app screen
+            }
+        });
+
+    </script>
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script>
+        window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')
+
+    </script>
+    <script src="dist/js/bootstrap.min.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,106 @@
+.container {
+    background-color: paleturquoise;
+}
+
+.h1 {
+    color: deeppink;
+    /*text-align: center;*/
+    /*font-size: 30pt;
+font-family: sans-serif;*/
+    margin-top: 12px;
+    margin-bottom: 12px;
+}
+
+.h2 {
+    color: darkgreen;
+    text-align: left;
+    font-size: 10pt;
+    font-family: sans-serif;
+    margin-top: 12px;
+    margin-bottom: 12px;
+}
+
+p {
+    color: darkblue;
+    text-align: left;
+    font-size: 14pt;
+    font-family: sans-serif;
+    margin-top: 12px;
+    margin-bottom: 12px;
+}
+
+.row {
+    margin-top: 12px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+#clients {
+    border-top: .5px;
+    border-bottom: .5px;
+    border-left: .5px;
+    border-right: .5px;
+    border-style: inset;
+    border-color: black;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font: 13px Helvetica, Arial;
+}
+
+#user {
+    background: #fff;
+    border-style: solid;
+    outline-style: solid;
+    border-color: grey;
+    margin-top: 10px;
+    border: 0px;
+    padding: 0px;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+}
+
+#messages {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+#messages li {
+    margin-top: 12px;
+    padding: 5px 10px;
+}
+
+#messages li:nth-child(odd) {
+    background-color: pink;
+}
+
+button {
+    margin-top: 10px;
+    width: 75px;
+    height: 50 px;
+    background-color: royalblue;
+    font-size: 12pt;
+    font-family: sans-serif;
+    border-bottom-style: none;
+    margin-right: 2px;
+    border-color: none;
+}
+
+#chatWrap {
+    float: left;
+    border: 1px #000 solid;
+}
+
+#chat {
+    height: 500px;
+}
